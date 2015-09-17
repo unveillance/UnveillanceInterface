@@ -212,6 +212,9 @@ if __name__ == "__main__":
 		
 		if len(config['ssh_root']) == 0:
 			config['ssh_root'] = os.path.join(os.path.expanduser("~"), ".ssh")
+		else:
+			if not os.path.exists(config['ssh_root']):
+				os.makedirs(config['ssh_root'])
 
 		if 'ssh_key_priv' not in config.keys():
 			print "Unveillance will now generate a public/private key pair for communication with the server"
