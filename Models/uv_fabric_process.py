@@ -29,7 +29,7 @@ class UnveillanceFabricProcess(threading.Thread):
 			
 			port_prefix = ""
 			if port is not None and port != 22:
-				port_prefix += ":%d" % port
+				port_prefix += ":%d" % int(port)
 				
 			self.args.update({
 				'hosts' : ["%s@%s%s" % (uv_user, hostname, port_prefix)]

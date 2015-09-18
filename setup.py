@@ -249,6 +249,8 @@ if __name__ == "__main__":
 		if type(config['annex_remote_port']) is not int:
 			if len(config['annex_remote_port']) == 0:
 				config['annex_remote_port'] = 22
+			else:
+				config['annex_remote_port'] = int(config['annex_remote_port'])
 		
 		print "*************** ATTENTION ******************"
 		

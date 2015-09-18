@@ -65,7 +65,8 @@ def netcat(file, save_as=None, alias=None, for_local_use_only=False, importer_so
 		".git/hooks/uv-post-netcat \"%s\" %s" % (save_as, " ".join(cmd_flags))
 	]
 
-	if DEBUG: print "ATTEMPTING NETCAT:\nfile:%s" % save_as
+	if DEBUG:
+		print "ATTEMPTING NETCAT:\nfile:%s" % save_as
 
 	USE_SSH = getSecrets('server_force_ssh')
 	print "USE SSH? %s" % USE_SSH
@@ -83,9 +84,25 @@ def netcat(file, save_as=None, alias=None, for_local_use_only=False, importer_so
 			put_file = os.path.join(getSecrets('annex_remote'), save_as)
 			put_cmd = put(file, put_file)
 			
-			if DEBUG: print put_cmd
+			if len(put_cmd) == 0:
+				if DEBUG:
+					print "COULD NOT PUT"
+				
+				return None
 
-			if len(put_cmd) == 0 or put_cmd[0] != put_file:
+			if put_cmd[0] != put_file:
+				# try to resolve '~' first before failing
+				if put_file[0] == '~':
+					if DEBUG:
+						print "trying to replace the ~ char first..."
+
+					put_file = put_file.replace('~', "/".join(put_cmd[0].split("/")[:3]))
+
+			if put_cmd[0] != put_file:
+				if DEBUG:
+					print "RETURNING BECAUSE SOMETHING DID NOT WORK?"
+					print "put_file = %s, put_cmd[0] = %s" % (put_file, put_cmd[0])
+				
 				return None
 
 			res.append(put_cmd)
@@ -107,12 +124,10 @@ def netcat(file, save_as=None, alias=None, for_local_use_only=False, importer_so
 
 	os.chdir(op_dir)
 
-	if DEBUG: 
-		print "\n\nNOW LAUNCHING NETCAT COMMANDS (%d)" % len(cmd)	
-		print "in dir %s" % os.getcwd()
-
 	for c in cmd:
-		if DEBUG: print "\n%s\n" % c
+		if DEBUG: 
+			print "\n%s\n" % c
+		
 		res.append(local(c, capture=True))
 
 	os.chdir(this_dir)
