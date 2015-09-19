@@ -230,6 +230,9 @@ class UnveillanceFSEHandler(FileSystemEventHandler):
 		if re.match(r'.*\.DS_Store', event.src_path) is not None:
 			return
 
+		if re.match(r'.*/\._*', event.src_path) is not None:
+			return
+
 		sleep(3)
 
 		filename = event.src_path.split("/")[-1]

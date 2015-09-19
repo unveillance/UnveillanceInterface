@@ -212,6 +212,9 @@ if __name__ == "__main__":
 		
 		if len(config['ssh_root']) == 0:
 			config['ssh_root'] = os.path.join(os.path.expanduser("~"), ".ssh")
+		else:
+			if not os.path.exists(config['ssh_root']):
+				os.makedirs(config['ssh_root'])
 
 		if 'ssh_key_priv' not in config.keys():
 			print "Unveillance will now generate a public/private key pair for communication with the server"
@@ -246,6 +249,8 @@ if __name__ == "__main__":
 		if type(config['annex_remote_port']) is not int:
 			if len(config['annex_remote_port']) == 0:
 				config['annex_remote_port'] = 22
+			else:
+				config['annex_remote_port'] = int(config['annex_remote_port'])
 		
 		print "*************** ATTENTION ******************"
 		
