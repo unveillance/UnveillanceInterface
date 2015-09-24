@@ -309,7 +309,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			if module in [k for k,v in self.application.on_loads.iteritems()]:
 				on_loads.extend(self.application.on_loads[module])
 
-			return "".join(map(js_or_css, on_loads))
+			return "\n\t\t".join(map(js_or_css, on_loads))
 			
 		@tornado.web.asynchronous
 		def post(self, route):
