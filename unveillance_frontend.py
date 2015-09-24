@@ -34,7 +34,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 	def __init__(self):
 		self.api_pid_file = os.path.join(MONITOR_ROOT, "frontend.pid.txt")
 		self.api_log_file = os.path.join(MONITOR_ROOT, "frontend.log.txt")
-		
+
 		self.reserved_routes = ["frontend", "web", "files", "statuses"]
 		self.routes = [
 			(r"/web/([a-zA-Z0-9\-\._/]+)", self.WebAssetHandler),
