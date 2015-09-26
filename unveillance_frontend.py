@@ -43,7 +43,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			(r"/task/", self.TaskHandler)]
 
 		self.default_on_loads = [
-			"/web/js/lib/sockjs-0.3.min.js",
+			"/web/js/lib/sockjs.min.js",
 			"/web/js/models/unveillance_notifier.js",
 			"/web/js/models/unveillance_document.js"
 		]
