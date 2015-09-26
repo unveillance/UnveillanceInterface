@@ -89,7 +89,7 @@ class UnveillanceAPI():
 			if res is None:
 				res = {
 					'file_name' : save_as['filename'],
-					'result' : 403,
+					'result' : 404,
 					'duplicate_attempt' : False
 				}
 			else:

@@ -34,7 +34,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 	def __init__(self):
 		self.api_pid_file = os.path.join(MONITOR_ROOT, "frontend.pid.txt")
 		self.api_log_file = os.path.join(MONITOR_ROOT, "frontend.log.txt")
-		
+
 		self.reserved_routes = ["frontend", "web", "files", "statuses"]
 		self.routes = [
 			(r"/web/([a-zA-Z0-9\-\._/]+)", self.WebAssetHandler),
@@ -309,7 +309,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			if module in [k for k,v in self.application.on_loads.iteritems()]:
 				on_loads.extend(self.application.on_loads[module])
 
-			return "".join(map(js_or_css, on_loads))
+			return "\n\t\t".join(map(js_or_css, on_loads))
 			
 		@tornado.web.asynchronous
 		def post(self, route):
