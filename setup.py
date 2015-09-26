@@ -1,4 +1,4 @@
-import os, re, json
+import os, re, json, getpass
 from time import time, sleep
 from sys import argv, exit
 from fabric.api import local, settings
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 	print "\n****************************"
 	print "Hello.  Welcome to Unveillance Frontend setup."
 	admin_username = prompt("Choose a username:")
-	admin_pwd = prompt("Pick a good password:")
+	admin_pwd = getpass.getpass(prompt="Pick a good password:")
 
 	print "****************************\n"
 
