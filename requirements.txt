@@ -6,3 +6,6 @@ watchdog
 anyjson
 requests
 tornado
+cachecontrol
+ua-parser
+user-agents

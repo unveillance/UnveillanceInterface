@@ -14,6 +14,7 @@ from cachecontrol import CacheControl
 from mako.template import Template
 from urllib import quote_plus, urlencode
 from urlparse import urlparse, parse_qs
+from user_agents import parse as ua_parse
 
 from api import UnveillanceAPI
 from Models.uv_annex_watcher import UnveillanceFSEHandler
@@ -52,8 +53,39 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.restricted_routes_by_status = [[] for i in range(4)]
 		self.restricted_mime_types_by_status = [[] for i in range(4)]
 		self.restrict_source_files = {}
-		self.on_loads = {}
-		self.get_page_load_extras = {}
+		
+		self.on_loads = {
+			"main" : [
+				'/web/css/tabs.css',
+				'/web/css/uv_viz.css',
+				'/web/js/lib/dropzone.js',
+				'/web/js/viz/uv_progress_notifer.js',
+				'/web/js/viz/uv_document_source.js',
+				'/web/js/viz/uv_document_wrapper.js',
+				'/web/js/viz/uv_appended_userdata.js',
+				'/web/js/viz/uv_document_browser.js',
+				'/web/js/viz/uv_asset_browser.js',
+				'/web/js/viz/uv_documents.js',
+				'/web/js/viz/uv_file.js',
+				'/web/js/viz/uv_metadata.js',
+				'/web/js/viz/uv_notes.js',
+				'/web/js/viz/uv_export.js',
+				'/web/js/models/uv_document.js',
+				'/web/js/models/uv_search.js',
+				'/web/js/models/uv_dropzone.js',
+				'/web/js/models/uv_document_browser.js',
+				'/web/js/modules/uv_search.js',
+				'/web/js/modules/main.js'
+			],
+			"unveil" : [
+				'/web/js/modules/uv_unveil.js',
+				'/web/js/models/uv_task_pipe.js'
+			]
+		}
+		
+		self.get_page_load_extras = {
+			"body_classes" : self.get_browser_from_user_agent
+		}
 		
 		from conf import buildServerURL, SERVER_PORT, SHA1_INDEX
 		from vars import MIME_TYPES, ASSET_TAGS, MIME_TYPE_TASKS
@@ -310,7 +342,19 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 				on_loads.extend(self.application.on_loads[module])
 
 			return "\n\t\t".join(map(js_or_css, on_loads))
-			
+
+		def get_browser_from_user_agent(self, request):
+			try:
+				user_agent = ua_parse(request.headers['User-Agent']).browser
+				return ("%s_%s" % (user_agent.family, user_agent.version_string)).lower().replace(" ", "_").replace(".", "_")
+
+			except Exception as e:
+				if DEBUG:
+					print e, type(e)
+					print "could not get User-Agent"
+
+			return ""
+				
 		@tornado.web.asynchronous
 		def post(self, route):
 			print "GETTING A ROUTE %s" % route
