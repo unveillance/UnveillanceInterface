@@ -43,9 +43,10 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			(r"/task/", self.TaskHandler)]
 
 		self.default_on_loads = [
+			"/web/css/bootstrap.min.css",
 			"/web/js/lib/sockjs.min.js",
 			"/web/js/models/unveillance_notifier.js",
-			"/web/js/models/unveillance_document.js"
+			"/web/js/lib/bootstrap.min.js"
 		]
 
 		self.on_loads_by_status = [[] for i in range(4)]
@@ -69,6 +70,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 				'/web/js/viz/uv_metadata.js',
 				'/web/js/viz/uv_notes.js',
 				'/web/js/viz/uv_export.js',
+				'/web/js/models/unveillance_document.js',
 				'/web/js/models/uv_document.js',
 				'/web/js/models/uv_search.js',
 				'/web/js/models/uv_dropzone.js',
@@ -81,7 +83,9 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 				'/web/js/models/uv_task_pipe.js'
 			],
 			"queue" : [
-				'/web/js/modules/uv_queue_builder.js'
+				'/web/css/uv_queue_builder.css',
+				'/web/js/modules/uv_queue_builder.js',
+				'/web/js/models/unveillance_queue.js'
 			]
 		}
 		
@@ -89,14 +93,15 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			"body_classes" : self.get_browser_from_user_agent
 		}
 		
-		from conf import buildServerURL, SERVER_PORT, SHA1_INDEX
+		from conf import buildServerURL, SERVER_PORT, SHA1_INDEX, TASK_POOL
 		from vars import MIME_TYPES, ASSET_TAGS, MIME_TYPE_TASKS
 
 		self.init_vars = {
 			'MIME_TYPES' : MIME_TYPES,
 			'ASSET_TAGS' : ASSET_TAGS,
 			'MIME_TYPE_TASKS' : MIME_TYPE_TASKS,
-			'SHA1_INDEX' : 32 if not SHA1_INDEX else 40
+			'SHA1_INDEX' : 32 if not SHA1_INDEX else 40,
+			'TASK_POOL' : TASK_POOL
 		}
 		
 		UnveillanceAPI.__init__(self)
@@ -473,10 +478,6 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 
 		p = Process(target=self.startAnnexObserver)
 		p.start()
-
-		if openurl:
-			url = "http://localhost:%d/" % API_PORT
-			webbrowser.open(url)
 		
 	def shutdown(self):
 		try:

@@ -5,6 +5,19 @@ var UV = JSON.parse($.ajax({
 	async: false
 }).success().responseText);
 
+var custom_uv = JSON.parse($.ajax({
+	url: "/web/vars.json",
+	dataType: "json",
+	method: "get",
+	async: false
+}).success().responseText);
+
+_.extend(UV.MIME_TYPE_TASKS, custom_uv.MIME_TYPE_TASKS || {});
+_.extend(UV.MIME_TYPES, custom_uv.MIME_TYPE_MAP || {});
+_.extend(UV.INITIAL_TASKS, custom_uv.INITIAL_TASKS || {});
+_.extend(UV.INTERVAL_TASKS, custom_uv.INTERVAL_TASKS || {});
+UV.TASK_POOL = _.union(UV.TASK_POOL, custom_uv.TASK_POOL || []);
+
 _.extend(UV, {
 	SEARCH_FACETS : [
 			"Mime Type",

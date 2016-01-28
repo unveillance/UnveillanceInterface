@@ -1,0 +1,27 @@
+<li id="uv_qh_<%= cid %>">
+	<table>
+		<tr>
+			<td width="25%">
+				<div class="uv_qh_queue_type" onclick="onQueueEdit(this);">
+					<a><%= queue_type_render %> <%= queue_params_render %></a>
+				</div>
+			</td>
+
+			<td width="65%">
+				<div onclick="onQueueEdit(this);" class="uv_qh_queue_list">
+					<ul>
+						<%= queue_list_render %>
+					</ul>
+				</div>
+			</td>
+
+			<td width="10%">
+				<div class="uv_qh_queue_opts">
+					<ul>
+						<li><a onclick="onQueueDelete(this);">Delete</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	</table>
+</li>

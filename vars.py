@@ -53,5 +53,7 @@ MIME_TYPE_MAP = {
 	'application/json' : "json"
 }
 
+TASK_POOL = []
+MIME_TYPE_TASKS = {}
 MIME_TYPE_TASK_REQUIREMENTS = []
 AVAILABLE_CLUSTERS = {}

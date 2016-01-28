@@ -136,6 +136,12 @@ try:
 			SHA1_INDEX = config['index.sha1']
 		except KeyError as e:
 			pass
+
+		try:
+			TASK_POOL = getSecrets('task_pool')
+		except Exception as e:
+			print "NO TASK POOL YET!"
+			TASK_POOL = []
 	
 		del config
 except IOError as e: pass

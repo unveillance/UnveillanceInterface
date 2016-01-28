@@ -1,0 +1,68 @@
+#uv_queue_opts, #uv_queue_holder, #uv_queue_opts {
+	width:100%;
+	display: table;
+	position: relative;
+}
+
+#uv_queue_tray {
+	height:12em;
+	border:1px solid #000;
+	overflow-y: auto;
+	overflow-x: hidden; 
+}
+
+#uv_queue_tray ul {
+	list-style-type: none;
+	height: 99%;
+	padding:0;
+	margin:0;
+}
+
+#uv_queue_tray ul li {
+	float: left;
+	width:33%;
+	height:33%;
+	border:1px solid #ccc;
+}
+
+#uv_queue_tray ul li.unavailable {
+	background-color: #ccc;
+	opacity: 0.3;
+}
+
+#uv_queue_holder ul {
+	height: inherit;
+}
+
+#uv_queue_holder ul li {
+	width:100%;
+	height:5em;
+}
+
+#uv_queue_holder ul li table {
+	width:100%;
+}
+
+#uv_queue_holder td {
+	vertical-align: top;
+}
+
+#uv_queue_holder ul li div.uv_qh_queue_list ul li {
+	border: 1px solid #000;
+	height: 2em;
+}
+
+#uv_queue_holder ul li div {
+	float:left;
+	padding-left:1em;
+	height:100%;
+}
+
+#uv_queue_holder ul li div.uv_qh_queue_opts {
+	float:right;
+	padding-right:1em;
+}
+
+#uv_queue_holder ul li.active {
+	background-color:#ccc;
+}
