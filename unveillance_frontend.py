@@ -39,7 +39,6 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.reserved_routes = ["frontend", "web", "files", "statuses"]
 		self.routes = [
 			(r"/web/([a-zA-Z0-9\-\._/]+)", self.WebAssetHandler),
-			(r"/auth/(user|annex|drive)/", self.AuthHandler),
 			(r"/files/(.+)", self.FileHandler),
 			(r"/task/", self.TaskHandler)]
 
@@ -80,6 +79,9 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			"unveil" : [
 				'/web/js/modules/uv_unveil.js',
 				'/web/js/models/uv_task_pipe.js'
+			],
+			"queue" : [
+				'/web/js/modules/uv_queue_builder.js'
 			]
 		}
 		
@@ -98,43 +100,6 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		}
 		
 		UnveillanceAPI.__init__(self)
-
-	class AuthHandler(tornado.web.RequestHandler):
-		@tornado.web.asynchronous
-		def get(self, auth_type):
-			endpoint = "/"
-			
-			if auth_type == "annex":
-				if self.application.do_get_status(self) == 3:
-					from lib.Frontend.Models.uv_fabric_process import UnveillanceFabricProcess
-					from lib.Frontend.Utils.fab_api import linkLocalRemote
-					
-					p = UnveillanceFabricProcess(linkLocalRemote)
-					p.join()
-					
-					try:
-						endpoint = "/#linked_remote_%s" % p.output
-					except AttributeError as e:
-						if DEBUG: print e
-					
-			self.redirect(endpoint)
-		
-		@tornado.web.asynchronous
-		def post(self, auth_type):
-			res = Result()
-			
-			if auth_type == "drive" and self.do_get_status in [3,4]:
-				status_check = "get_drive_status"
-			elif auth_type == "user":
-				status_check = "get_user_status"
-			
-			if status_check is not None:
-				res = self.application.routeRequest(res, status_check, self)
-			
-			if DEBUG: print res.emit()
-			
-			self.set_status(res.result)
-			self.finish(res.emit())
 	
 	class WebAssetHandler(tornado.web.RequestHandler):	# TODO: secure this better.
 		@tornado.web.asynchronous
@@ -403,6 +368,18 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 
 		query = query[0] + "mime_type=" + quote_plus(query[1])
 		return query
+
+	def get_browser_from_user_agent(self, request):
+		try:
+			user_agent = ua_parse(request.headers['User-Agent']).browser
+			return ("%s_%s" % (user_agent.family, user_agent.version_string)).lower().replace(" ", "_").replace(".", "_")
+
+		except Exception as e:
+			if DEBUG:
+				print e, type(e)
+				print "could not get User-Agent"
+
+		return ""
 	
 	def passToAnnex(self, handler, uri=None):
 		handler_status = self.do_get_status(handler)
