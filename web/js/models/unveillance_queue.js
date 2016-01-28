@@ -12,21 +12,18 @@ var UnveillanceQueue = Backbone.Model.extend({
 		// on start? at interval? on document of certain mime type?
 		this.set('queue_type', arguments[0]);
 		this.set('queue_params', arguments[1]);
-		console.info(this);
-
 	},
 	addTask: function(task_name) {
 		// add a task to the queue
-		this.get('queue_list').append(task_name);
+		if(!this.has('queue_list')) {
+			this.set('queue_list', []);
+		}
+
+		this.get('queue_list').push(task_name);
 	},
 	removeTask: function(task_index) {
-		console.info("removing task!");
-		console.info(arguments);
 		// remove a task from the queue
-
-	},
-	deleteSelf: function() {
-		// delete self via POST to api
+		this.get('queue_list').splice(task_index, 1);
 	},
 	refreshView: function(task_on_drag_event) {
 		return _.template(this.get('root_el'), _.extend(this.toJSON(), { 
@@ -43,9 +40,13 @@ var UnveillanceQueue = Backbone.Model.extend({
 
 		return _.map(this.get('queue_list'), function(task_name) {
 			return _.template(this.get('task_li_tmpl'), { task_name : task_name });
-		}, this);
+		}, this).join("");
 	},
 	queueTypeRender: function() {
+		if(!this.has('queue_type')) {
+			return this.get('empty_type_tmpl');
+		}
+
 		switch(this.get('queue_type')) {
 			case "mime_type":
 				return "on";
@@ -56,6 +57,10 @@ var UnveillanceQueue = Backbone.Model.extend({
 		}
 	},
 	queueParamsRender: function() {
+		if(!this.has('queue_type')) {
+			return "";
+		}
+
 		switch(this.get('queue_type')) {
 			case "mime_type":
 				var mime_type = this.get('queue_type');
@@ -69,6 +74,10 @@ var UnveillanceQueue = Backbone.Model.extend({
 				}, this);
 				
 				return _.template("<%= mime_type %> added", { mime_type : mime_type });
+			case "init":
+				return "startup"
+			case "interval":
+				return this.get('interval_param_tmpl');
 
 		}
 	}

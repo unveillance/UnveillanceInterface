@@ -12,23 +12,21 @@ var QueueList = Backbone.Model.extend({
 		this.tray_el = $("#uv_queue_tray").children("ul")[0];
 		this.tray_li_tmpl = getTemplate("tray_li.html");
 
-		var queue_list_li_tmpl = getTemplate("queue_holder_li.html");
-		var task_li_tmpl = getTemplate("task_li.html");
-		var empty_task_li_tmpl = getTemplate("empty_task_li.html");
-
-		var queue_stub = {
-			root_el : queue_list_li_tmpl,
-			task_li_tmpl : task_li_tmpl,
-			empty_task_li_tmpl : empty_task_li_tmpl
+		this.queue_stub = {
+			root_el : getTemplate("queue_holder_li.html"),
+			task_li_tmpl : getTemplate("task_li.html"),
+			empty_task_li_tmpl : getTemplate("empty_task_li.html"),
+			empty_type_tmpl : getTemplate("empty_type_tmpl.html"),
+			interval_param_tmpl : getTemplate("interval_param_tmpl.html")
 		};
 
 		var mime_type_tasks = _.map(_.keys(UV.MIME_TYPE_TASKS), function(mime_type) {
-			return new UnveillanceQueue(_.extend(queue_stub, {
+			return new UnveillanceQueue(_.extend(_.clone(this.queue_stub), {
 				queue_type : "mime_type",
 				queue_params : mime_type,
 				queue_list : UV.MIME_TYPE_TASKS[mime_type]
 			}));
-		});
+		}, this);
 
 		var init_tasks = [];
 		var interval_tasks = [];
@@ -72,7 +70,7 @@ var QueueList = Backbone.Model.extend({
 			case "uv_qh_queue_list":
 				tray_content = _.map(UV.TASK_POOL, function(task_name) {
 					return {
-						on_tray_option_clicked : "addTaskToQueue();",
+						on_tray_option_clicked : _.template("addTaskToQueue('<%= tn %>');", { tn : task_name}),
 						html : task_name
 					};
 				});
@@ -93,22 +91,35 @@ var QueueList = Backbone.Model.extend({
 		this.setActivatedQueue(arguments[1]);
 	},
 	onTaskDelete: function() {
-		console.info("deleting task");
-		console.info(arguments);
+		var el = arguments[0];
+		this.setActivatedQueue(el);
+		
+		var queue = this.getActivatedQueue();
+		if(!queue) {
+			return;
+		}
 
-		this.setActivatedQueue(arguments[1]);
+		var el_p = $(el).parents("li")[0];
+		var el_gp = $(el_p).parents("ul")[0];
+
+		queue[1].removeTask(_.indexOf($(el_gp).children("li"), el_p));
+		$(queue[0]).replaceWith(queue[1].refreshView());
+		this.setActivatedQueue($($("#uv_qh_" + queue[1].cid).children()).children());
 	},
 	onQueueEdit: function() {
-		console.info("editing queue");
 		this.refreshTray($(arguments[0]).attr('class'));
-
 		this.setActivatedQueue(arguments[0]);
 	},
 	onQueueDelete: function() {
-		console.info("deleting queue");
-		console.info(arguments);
-
 		this.setActivatedQueue(arguments[0]);
+
+		var queue = this.getActivatedQueue();
+		if(!queue) {
+			return;
+		}
+
+		this.data.remove(queue[1]);
+		$(queue[0]).remove();
 	},
 	onQueueListSave: function() {
 		console.info("saving queue list");
@@ -116,12 +127,14 @@ var QueueList = Backbone.Model.extend({
 		_.each(this.data.models, function(queue) { queue.save(); }, this);
 	},
 	onNewQueue: function() {
-		console.info("making new queue");
-		console.info(arguments);
+		var queue = this.data.add(new UnveillanceQueue(_.clone(this.queue_stub)));
+
+		$(this.root_el).prepend(queue.refreshView());
+		this.setActivatedQueue($($("#uv_qh_" + queue.cid).children()).children());
 	},
 	setActivatedQueue: function(el) {
 		var parent_el = $($(el).parents("table")).parents("li");
-		
+
 		_.each($(parent_el).siblings("li"), function(s) {
 			$(s).removeClass("active");
 		});
@@ -137,9 +150,6 @@ var QueueList = Backbone.Model.extend({
 		}
 	},
 	setQueueType: function() {
-		console.info("setting queue type");
-		console.info(arguments);
-
 		var queue = this.getActivatedQueue();
 		if(!queue) {
 			return;
@@ -150,14 +160,19 @@ var QueueList = Backbone.Model.extend({
 		$("#uv_qh_" + queue[1].cid).addClass("active");
 	},
 	addTaskToQueue: function(task_name) {
-		console.info("adding task to queue");
-		console.info(arguments);
+		var queue = this.getActivatedQueue();
+		if(!queue) {
+			return;
+		}
+
+		queue[1].addTask(task_name);
+		$(queue[0]).replaceWith(queue[1].refreshView());
+		this.setActivatedQueue($($("#uv_qh_" + queue[1].cid).children()).children());
 	}
 });
 
 function setupQueueList() {
 	queue_list = new QueueList();
-
 }
 
 $(document).ready(function($) {
