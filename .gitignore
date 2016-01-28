@@ -9,6 +9,7 @@ conf/*
 
 web/extras/*
 web/extras
+web/vars.json
 
 lib/*
 !lib/Frontend
