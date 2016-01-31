@@ -186,6 +186,8 @@ var QueueList = Backbone.Model.extend({
 		this.setActivatedQueue(el);
 
 		var opts_holder = $($(el).parents("li")[0]).find(".uv_task_opts_holder")[0];
+		console.info($(opts_holder));
+
 		if(!toggleElement(opts_holder)) {
 			return;
 		}
@@ -195,21 +197,15 @@ var QueueList = Backbone.Model.extend({
 			return;
 		}
 
-		var el_p = $(el).parents("li")[0];
-		var el_gp = $(el_p).parents("ul")[0];
-		var task_index = _.indexOf($(el_gp).children("li"), el_p);
-		var to_stub = this.task_opts_li_tmpl;
-
+		var to_stub = $(this.task_opts_li_tmpl).clone();
 		$($(opts_holder).find("a.uv_add_task_opt")[0]).click(function() {
-			$($(opts_holder).children("ul")[0]).prepend($(to_stub).clone());
+			$($(opts_holder).children("ul")[0]).prepend(to_stub);
 			
 			var ra = $($($(opts_holder).children("ul")[0]).children("li")[0]).find("a.uv_remove_task_opt");
 			$(ra).click(function() {
 				$($(this).parents("li")[0]).remove();
 			});
 		});
-
-		console.info(task_index);
 	}
 });
 
