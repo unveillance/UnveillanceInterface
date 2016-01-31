@@ -1,3 +1,13 @@
+a.uv_button {
+	background-color:#217d9b;
+	font-size:1.8em;
+	color: #fff;
+	display: inline-block;
+	margin:0.3em;
+	padding:0 0.3em;
+	text-decoration: none;
+}
+
 #uv_queue_opts, #uv_queue_holder, #uv_queue_opts {
 	width:100%;
 	display: table;
@@ -6,7 +16,7 @@
 
 #uv_queue_tray {
 	height:12em;
-	border:1px solid #000;
+	border-bottom:5px solid #000;
 	overflow-y: auto;
 	overflow-x: hidden; 
 }
@@ -31,16 +41,27 @@
 }
 
 #uv_queue_holder ul {
-	height: inherit;
+	height: auto;
+
 }
 
 #uv_queue_holder ul li {
 	width:100%;
-	height:5em;
+	height:auto;
 }
 
-#uv_queue_holder ul li table {
+#uv_queue_holder table, #uv_queue_holder ul li table {
 	width:100%;
+}
+
+#uv_queue_holder table.uv_heading tr td {
+	padding: 1em;
+	background-color: #999;
+	color:#fff;
+}
+
+#uv_queue_holder ul li table tr {
+	border-bottom: 1px solid #000;
 }
 
 #uv_queue_holder td {
@@ -50,6 +71,9 @@
 #uv_queue_holder ul li div.uv_qh_queue_list ul li {
 	border: 1px solid #000;
 	height: 2em;
+	width: auto;
+	margin: 3px 2px;
+	float: left;
 }
 
 #uv_queue_holder ul li div {
@@ -65,4 +89,14 @@
 
 #uv_queue_holder ul li.active {
 	background-color:#ccc;
+}
+
+#uv_queue_holder div.uv_task_opts_holder {
+	position: absolute;
+	display: none;
+	width: auto;
+	height: auto;
+	min-width: 15em;
+	border:1px solid #000;
+	background-color: #fff;
 }

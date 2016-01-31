@@ -25,6 +25,9 @@ var UnveillanceQueue = Backbone.Model.extend({
 		// remove a task from the queue
 		this.get('queue_list').splice(task_index, 1);
 	},
+	setTaskOpts: function(task_index, opts) {
+
+	},
 	refreshView: function(task_on_drag_event) {
 		return _.template(this.get('root_el'), _.extend(this.toJSON(), { 
 			queue_list_render : this.queueListRender(),

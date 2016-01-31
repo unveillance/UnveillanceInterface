@@ -3,14 +3,26 @@ var queue_list;
 var QueueList = Backbone.Model.extend({
 	constructor: function() {
 		Backbone.Model.apply(this, arguments);
+		var global_clicks = [
+			"addTaskToQueue", 
+			"onToggleTaskOpts",
+			"setQueueType", 
+			"onQueueListSave", 
+			"onNewQueue", 
+			"onQueueEdit", 
+			"onQueueDelete", 
+			"onTaskDrag", 
+			"onTaskDelete"
+		];
 
-		_.each(["addTaskToQueue", "setQueueType", "onQueueListSave", "onNewQueue", "onQueueEdit", "onQueueDelete", "onTaskDrag", "onTaskDelete"], function(f) {
+		_.each(global_clicks, function(f) {
 			window[f] = _.bind(this[f], this);
 		}, this);
 
 		this.root_el = $("#uv_queue_holder").children("ul")[0];
 		this.tray_el = $("#uv_queue_tray").children("ul")[0];
 		this.tray_li_tmpl = getTemplate("tray_li.html");
+		this.task_opts_li_tmpl = getTemplate("task_opts_li_tmpl.html");
 
 		this.queue_stub = {
 			root_el : getTemplate("queue_holder_li.html"),
@@ -168,6 +180,36 @@ var QueueList = Backbone.Model.extend({
 		queue[1].addTask(task_name);
 		$(queue[0]).replaceWith(queue[1].refreshView());
 		this.setActivatedQueue($($("#uv_qh_" + queue[1].cid).children()).children());
+	},
+	onToggleTaskOpts: function() {
+		var el = arguments[0];
+		this.setActivatedQueue(el);
+
+		var opts_holder = $($(el).parents("li")[0]).find(".uv_task_opts_holder")[0];
+		if(!toggleElement(opts_holder)) {
+			return;
+		}
+
+		var queue = this.getActivatedQueue();
+		if(!queue) {
+			return;
+		}
+
+		var el_p = $(el).parents("li")[0];
+		var el_gp = $(el_p).parents("ul")[0];
+		var task_index = _.indexOf($(el_gp).children("li"), el_p);
+		var to_stub = this.task_opts_li_tmpl;
+
+		$($(opts_holder).find("a.uv_add_task_opt")[0]).click(function() {
+			$($(opts_holder).children("ul")[0]).prepend($(to_stub).clone());
+			
+			var ra = $($($(opts_holder).children("ul")[0]).children("li")[0]).find("a.uv_remove_task_opt");
+			$(ra).click(function() {
+				$($(this).parents("li")[0]).remove();
+			});
+		});
+
+		console.info(task_index);
 	}
 });
 
@@ -176,9 +218,5 @@ function setupQueueList() {
 }
 
 $(document).ready(function($) {
-	try {
-		setupQueueList();
-	} catch(err) {
-		console.warn(err);
-	}
+	setupQueueList();
 });

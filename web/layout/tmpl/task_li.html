@@ -1,6 +1,10 @@
 <li>
-	<div draggable="true" ondragstart="onTaskDrag(event, this);">
-		<span><%= task_name %></span>
-		<a onclick="onTaskDelete(this);">[x]</a>
+	<div>
+		<a onclick="onToggleTaskOpts(this);"><%= task_name %></a> <a onclick="onTaskDelete(this);">[x]</a>
+		<div class="uv_task_opts_holder">
+			<span><b>Options</b> <a class="uv_add_task_opt">[+]</a></span>
+			<ul></ul>
+			<a onclick="onToggleTaskOpts(this);">Set</a>
+		</div>
 	</div>
 </li>
