@@ -1,0 +1,38 @@
+#uv_notifications_tray, #uv_document_holder {
+	width:100%;
+	display: table;
+	position: relative;
+}
+
+#uv_notifications_tray {
+	height:12em;
+	border-bottom:5px solid #000;
+	overflow-y: auto;
+	overflow-x: hidden; 
+}
+
+#uv_notifications_tray ul {
+	list-style-type: none;
+	height: 99%;
+	padding:0;
+	margin:0;
+}
+
+#uv_notifications_tray ul li {
+	float: left;
+	width:33%;
+	height:33%;
+	border:1px solid #ccc;
+}
+
+#uv_document_holder table, #uv_document_holder ul li table {
+	width:100%;
+}
+
+#uv_document_holder ul li table tr {
+	border-bottom: 1px solid #000;
+}
+
+#uv_document_holder td {
+	vertical-align: top;
+}

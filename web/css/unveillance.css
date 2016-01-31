@@ -11,6 +11,16 @@ a {
 	cursor:pointer;
 }
 
+a.uv_button {
+	background-color:#217d9b;
+	font-size:1.8em;
+	color: #fff;
+	display: inline-block;
+	margin:0.3em;
+	padding:0 0.3em;
+	text-decoration: none;
+}
+
 .uv_activated {
 	background-color:#ccc !important;
 }
@@ -49,4 +59,10 @@ a {
 #uv_document_asset_viewer textarea {
 	width:inherit;
 	height:inherit;
+}
+
+div table.uv_heading tr td {
+	padding: 1em;
+	background-color: #999;
+	color:#fff;
 }

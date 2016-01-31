@@ -1,0 +1,17 @@
+#uv_raw_asset_holder {
+	width: 100%;
+	height: 100%;
+	padding: 1em;
+}
+
+#uv_raw_asset_holder textarea {
+	width:inherit;
+	height: inherit;
+	border:1px solid #000;
+}
+
+#uv_raw_asset_title {
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 1em;
+}

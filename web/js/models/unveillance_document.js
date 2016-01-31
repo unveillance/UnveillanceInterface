@@ -2,6 +2,20 @@ var UnveillanceDocument = Backbone.Model.extend({
 	constructor: function() {
 		Backbone.Model.apply(this, arguments);
 		this.idAttribute = "_id";
+
+		var mime_type_map = null;
+		_.find(UV.MIME_TYPES, function(v, k) {
+			if(this.get('mime_type') === v) {
+				mime_type_map = k;
+				return true;
+			}
+
+			return false;
+		}, this);
+
+
+		this.set('mime_type_map', mime_type_map);
+		this.set('date_added_render', moment.unix(this.get('date_added')/1000).toString());
 	},
 	getAssetsByTagName: function(tag) {
 		var tagged_assets = [];
@@ -19,38 +33,6 @@ var UnveillanceDocument = Backbone.Model.extend({
 		if(task_path) { _.extend(req, { task_path : task_path }); }
 
 		return doInnerAjax("reindex", "post", req, callback, false);
-	},
-	setInPanel: function(asset, panel) {
-		var callback;
-
-		if(!panel) {
-			panel = $(document.createElement('div'))
-				.attr('id',  "uv_document_view_panel");
-
-			$('body').append(panel);
-		}
-
-		switch(asset) {
-			case "reindexer":
-				callback = window.onReindexerInvoked || function() {
-					$('#uv_pipe_builder').html(getTemplate("pipe_builder.html"));
-					if(task_pipe) {
-						task_pipe.setOptions($("#uv_reindex_list"));
-						task_pipe.set('task_extras',  $("#uv_reindex_custom_extras"));
-					}
-				}
-
-				break;
-			case "assets":
-				callback = window.onAssetsInvoked || null;
-				break;
-			case "info":
-				callback = window.onInfoInvoked || null;
-				break;
-		}
-
-		insertTemplate(asset + ".html", this.toJSON().data,
-			panel, callback, "/web/layout/views/unveil/");
 	},
 	refreshTags: function() {
 		if(!window.current_user) { return; }
@@ -108,16 +90,14 @@ var UnveillanceDocument = Backbone.Model.extend({
 			media_id : this.get('data')._id
 		}, null, false).data;
 	},
-	updateTaskMessage: function(message) {
-		console.info(message);
+	refreshView: function() {
+		var view_render = this.toJSON();
 		
-		if(message.doc_id && message.doc_id == this.get('data')._id) {
-			var message_li = $(document.createElement('li')).html(JSON.stringify(message));
-			
-			$($("#uv_default_task_update").children('ul')[0]).append(message_li);
-
-			window.setTimeout(function() { $(message_li).remove(); }, 15000);
+		if(this.has('getCustomRender')) {
+			view_render = _.extend(view_render, this.get('getCustomRender')());
 		}
+
+		return _.template(this.get('root_el'), view_render);
 	}
 });
 
