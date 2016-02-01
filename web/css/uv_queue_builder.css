@@ -1,14 +1,4 @@
-a.uv_button {
-	background-color:#217d9b;
-	font-size:1.8em;
-	color: #fff;
-	display: inline-block;
-	margin:0.3em;
-	padding:0 0.3em;
-	text-decoration: none;
-}
-
-#uv_queue_opts, #uv_queue_holder, #uv_queue_opts {
+#uv_queue_opts, #uv_queue_holder {
 	width:100%;
 	display: table;
 	position: relative;
@@ -54,12 +44,6 @@ a.uv_button {
 	width:100%;
 }
 
-#uv_queue_holder table.uv_heading tr td {
-	padding: 1em;
-	background-color: #999;
-	color:#fff;
-}
-
 #uv_queue_holder ul li table tr {
 	border-bottom: 1px solid #000;
 }
@@ -103,4 +87,8 @@ a.uv_button {
 
 #uv_queue_holder div.uv_task_opts_holder li {
 	border:none !important;
+}
+
+#uv_queue_opts ul li {
+	float:left !important;
 }

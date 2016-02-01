@@ -56,36 +56,26 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		
 		self.on_loads = {
 			"main" : [
-				'/web/css/tabs.css',
-				'/web/css/uv_viz.css',
-				'/web/js/lib/dropzone.js',
-				'/web/js/viz/uv_progress_notifer.js',
-				'/web/js/viz/uv_document_source.js',
-				'/web/js/viz/uv_document_wrapper.js',
-				'/web/js/viz/uv_appended_userdata.js',
-				'/web/js/viz/uv_document_browser.js',
-				'/web/js/viz/uv_asset_browser.js',
-				'/web/js/viz/uv_documents.js',
-				'/web/js/viz/uv_file.js',
-				'/web/js/viz/uv_metadata.js',
-				'/web/js/viz/uv_notes.js',
-				'/web/js/viz/uv_export.js',
-				'/web/js/models/unveillance_document.js',
-				'/web/js/models/uv_document.js',
+				'/web/css/main.css',
 				'/web/js/models/uv_search.js',
-				'/web/js/models/uv_dropzone.js',
-				'/web/js/models/uv_document_browser.js',
-				'/web/js/modules/uv_search.js',
-				'/web/js/modules/main.js'
+				'/web/js/models/unveillance_document.js',
+				'/web/js/lib/visualsearch.js',
+				'/web/js/modules/main.js',
+				'/web/js/modules/uv_search.js'
 			],
 			"unveil" : [
+				'/web/css/uv_unveil.css',
+				'/web/js/models/unveillance_document.js',
 				'/web/js/modules/uv_unveil.js',
-				'/web/js/models/uv_task_pipe.js'
 			],
 			"queue" : [
 				'/web/css/uv_queue_builder.css',
 				'/web/js/modules/uv_queue_builder.js',
 				'/web/js/models/unveillance_queue.js'
+			],
+			"asset" : [
+				'/web/css/uv_asset.css',
+				'/web/js/modules/uv_asset.js'
 			]
 		}
 		

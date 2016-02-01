@@ -1,0 +1,12 @@
+<ul class="documents_list" id="document_browser">
+	{{ #. }}
+	<li><h4>{{ mime_type }}</h4>
+		<ul>
+			{{ #docs }}
+			<li><a data-hash="{{ _id}}" href="#file&_id={{ _id }}/">{{ file_name }}</a></li>
+			{{ /docs }}
+		</ul>
+	</li>
+	{{ /. }}
+</ul>
+
