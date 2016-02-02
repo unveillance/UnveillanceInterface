@@ -14,7 +14,7 @@ var UnveillanceDocument = Backbone.Model.extend({
 		}, this);
 
 		this.set('mime_type_map', mime_type_map);
-		this.set('date_added_render', moment.unix(this.get('date_added')/1000).toString());
+		this.set('date_added_render', this.get('uv_date_renderer').enc(this.get('date_added')));
 	},
 	getAssetsByTagName: function(tag) {
 		var tagged_assets = [];

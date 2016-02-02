@@ -1,7 +1,12 @@
-#uv_queue_opts, #uv_queue_holder {
+#uv_queue_opts, #uv_queue_info, #uv_queue_holder {
 	width:100%;
 	display: table;
 	position: relative;
+}
+
+#uv_queue_info {
+	height:2.2em;
+	background-color: #ccc;
 }
 
 #uv_queue_tray {

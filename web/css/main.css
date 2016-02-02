@@ -1,7 +1,12 @@
-#uv_notifications_tray, #uv_document_holder {
+#uv_notifications_tray, #uv_search_bar_holder, #uv_document_holder {
 	width:100%;
 	display: table;
 	position: relative;
+}
+
+#uv_search_bar_holder {
+	height : 2.2em;
+	background-color: #ccc;
 }
 
 #uv_notifications_tray {
@@ -35,6 +40,10 @@
 
 #uv_document_holder td {
 	vertical-align: top;
+}
+
+#uv_document_holder ul li {
+	min-height: 2em;
 }
 
 #uv_document_holder ul li.active {

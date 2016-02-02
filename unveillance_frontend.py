@@ -57,7 +57,12 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.on_loads = {
 			"main" : [
 				'/web/css/main.css',
+				'/web/css/visualsearch-datauri.css',
+				'/web/css/visualsearch.css',
+				'/web/css/search.css',
 				'/web/css/messenger_tray.css',
+				'/web/js/lib/visualsearch.js',
+				'/web/js/models/unveillance_search.js',
 				'/web/js/models/unveillance_list.js',
 				'/web/js/models/unveillance_document_list.js',
 				'/web/js/models/unveillance_document.js',
