@@ -1,0 +1,18 @@
+.uv_messenger_li {
+	height: auto !important;
+	width: 100% !important;
+	color : #999;
+}
+
+.uv_messenger_indicator_light {
+	width: 2em;
+	height: auto;
+}
+
+.uv_mil_200 {
+	background-color: green;
+}
+
+.uv_mil_302 {
+	background-color: yellow;
+}

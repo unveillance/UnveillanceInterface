@@ -45,7 +45,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.default_on_loads = [
 			"/web/css/bootstrap.min.css",
 			"/web/js/lib/sockjs.min.js",
-			"/web/js/models/unveillance_notifier.js",
+			"/web/js/models/unveillance_messenger.js",
 			"/web/js/lib/bootstrap.min.js"
 		]
 
@@ -57,25 +57,28 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.on_loads = {
 			"main" : [
 				'/web/css/main.css',
-				'/web/js/models/uv_search.js',
+				'/web/css/messenger_tray.css',
+				'/web/js/models/unveillance_list.js',
+				'/web/js/models/unveillance_document_list.js',
 				'/web/js/models/unveillance_document.js',
-				'/web/js/lib/visualsearch.js',
-				'/web/js/modules/main.js',
-				'/web/js/modules/uv_search.js'
+				'/web/js/models/unveillance_messenger_list.js',
+				'/web/js/modules/main.js'
 			],
 			"unveil" : [
-				'/web/css/uv_unveil.css',
+				'/web/css/unveil.css',
 				'/web/js/models/unveillance_document.js',
-				'/web/js/modules/uv_unveil.js',
+				'/web/js/modules/unveil.js',
 			],
 			"queue" : [
-				'/web/css/uv_queue_builder.css',
-				'/web/js/modules/uv_queue_builder.js',
-				'/web/js/models/unveillance_queue.js'
+				'/web/css/queue.css',
+				'/web/js/models/unveillance_list.js',
+				'/web/js/models/unveillance_queue_list.js',
+				'/web/js/models/unveillance_queue.js',
+				'/web/js/modules/queue.js'
 			],
 			"asset" : [
-				'/web/css/uv_asset.css',
-				'/web/js/modules/uv_asset.js'
+				'/web/css/asset.css',
+				'/web/js/modules/asset.js'
 			]
 		}
 		

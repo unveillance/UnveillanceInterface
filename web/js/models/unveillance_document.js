@@ -13,7 +13,6 @@ var UnveillanceDocument = Backbone.Model.extend({
 			return false;
 		}, this);
 
-
 		this.set('mime_type_map', mime_type_map);
 		this.set('date_added_render', moment.unix(this.get('date_added')/1000).toString());
 	},
@@ -29,10 +28,14 @@ var UnveillanceDocument = Backbone.Model.extend({
 		
 		return tagged_assets;
 	},
-	reindex: function(callback, req, task_path) {
+	reindex: function(callback, task_path) {
+		var req = { _id : this.get('_id') };
 		if(task_path) { _.extend(req, { task_path : task_path }); }
 
 		return doInnerAjax("reindex", "post", req, callback, false);
+	},
+	log: function() {
+
 	},
 	refreshTags: function() {
 		if(!window.current_user) { return; }

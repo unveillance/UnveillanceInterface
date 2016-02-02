@@ -1,8 +1,5 @@
-var queue_list;
-
-var QueueList = Backbone.Model.extend({
+var UnveillanceQueueList = UnveillanceList.extend({
 	constructor: function() {
-		Backbone.Model.apply(this, arguments);
 		var global_clicks = [
 			"addTaskToQueue", 
 			"onToggleTaskOpts",
@@ -15,11 +12,9 @@ var QueueList = Backbone.Model.extend({
 			"onTaskDelete"
 		];
 
-		_.each(global_clicks, function(f) {
-			window[f] = _.bind(this[f], this);
-		}, this);
+		_.extend(arguments[0], { global_clicks : global_clicks });
+		UnveillanceList.apply(this, arguments);
 
-		this.root_el = $("#uv_queue_holder").children("ul")[0];
 		this.tray_el = $("#uv_queue_tray").children("ul")[0];
 		this.tray_li_tmpl = getTemplate("tray_li.html");
 		this.task_opts_li_tmpl = getTemplate("task_opts_li_tmpl.html");
@@ -46,11 +41,6 @@ var QueueList = Backbone.Model.extend({
 		this.data = new Backbone.Collection(_.union(mime_type_tasks, init_tasks, interval_tasks));
 		this.refreshView();
 
-	},
-	refreshView: function(){
-		_.each(this.data.models, function(queue) {
-			$(this.root_el).append(queue.refreshView());
-		}, this);
 	},
 	refreshTray: function(ctx) {
 		$(this.tray_el).empty();
@@ -100,13 +90,13 @@ var QueueList = Backbone.Model.extend({
 		console.info("dragging task");
 		console.info(arguments);
 
-		this.setActivatedQueue(arguments[1]);
+		this.setActivatedItem(arguments[1]);
 	},
 	onTaskDelete: function() {
 		var el = arguments[0];
-		this.setActivatedQueue(el);
+		this.setActivatedItem(el);
 		
-		var queue = this.getActivatedQueue();
+		var queue = this.getActivatedItem();
 		if(!queue) {
 			return;
 		}
@@ -116,16 +106,16 @@ var QueueList = Backbone.Model.extend({
 
 		queue[1].removeTask(_.indexOf($(el_gp).children("li"), el_p));
 		$(queue[0]).replaceWith(queue[1].refreshView());
-		this.setActivatedQueue($($("#uv_qh_" + queue[1].cid).children()).children());
+		this.setActivatedItem($($("#uv_li_" + queue[1].cid).children()).children());
 	},
 	onQueueEdit: function() {
 		this.refreshTray($(arguments[0]).attr('class'));
-		this.setActivatedQueue(arguments[0]);
+		this.setActivatedItem(arguments[0]);
 	},
 	onQueueDelete: function() {
-		this.setActivatedQueue(arguments[0]);
+		this.setActivatedItem(arguments[0]);
 
-		var queue = this.getActivatedQueue();
+		var queue = this.getActivatedItem();
 		if(!queue) {
 			return;
 		}
@@ -141,49 +131,32 @@ var QueueList = Backbone.Model.extend({
 	onNewQueue: function() {
 		var queue = this.data.add(new UnveillanceQueue(_.clone(this.queue_stub)));
 
-		$(this.root_el).prepend(queue.refreshView());
-		this.setActivatedQueue($($("#uv_qh_" + queue.cid).children()).children());
-	},
-	setActivatedQueue: function(el) {
-		var parent_el = $($(el).parents("table")).parents("li");
-
-		_.each($(parent_el).siblings("li"), function(s) {
-			$(s).removeClass("active");
-		});
-
-		$(parent_el).addClass("active");
-	},
-	getActivatedQueue: function() {
-		var parent_el = $($("#uv_queue_holder").children("ul")[0]).children("li.active");
-
-		if(parent_el) {
-			var cid = $(parent_el).attr('id').replace("uv_qh_", "");
-			return [parent_el, _.findWhere(this.data.models, { cid : cid })];
-		}
+		$(this.get('root_el')).prepend(queue.refreshView());
+		this.setActivatedItem($($("#uv_li_" + queue.cid).children()).children());
 	},
 	setQueueType: function() {
-		var queue = this.getActivatedQueue();
+		var queue = this.getActivatedItem();
 		if(!queue) {
 			return;
 		}
 
 		queue[1].setType(arguments[0], UV.MIME_TYPES[arguments[1]]);
 		$(queue[0]).replaceWith(queue[1].refreshView());
-		$("#uv_qh_" + queue[1].cid).addClass("active");
+		$("#uv_li_" + queue[1].cid).addClass("active");
 	},
 	addTaskToQueue: function(task_name) {
-		var queue = this.getActivatedQueue();
+		var queue = this.getActivatedItem();
 		if(!queue) {
 			return;
 		}
 
 		queue[1].addTask(task_name);
 		$(queue[0]).replaceWith(queue[1].refreshView());
-		this.setActivatedQueue($($("#uv_qh_" + queue[1].cid).children()).children());
+		this.setActivatedItem($($("#uv_li_" + queue[1].cid).children()).children());
 	},
 	onToggleTaskOpts: function() {
 		var el = arguments[0];
-		this.setActivatedQueue(el);
+		this.setActivatedItem(el);
 
 		var opts_holder = $($(el).parents("li")[0]).find(".uv_task_opts_holder")[0];
 		console.info($(opts_holder));
@@ -192,7 +165,7 @@ var QueueList = Backbone.Model.extend({
 			return;
 		}
 
-		var queue = this.getActivatedQueue();
+		var queue = this.getActivatedItem();
 		if(!queue) {
 			return;
 		}
@@ -207,12 +180,4 @@ var QueueList = Backbone.Model.extend({
 			});
 		});
 	}
-});
-
-function setupQueueList() {
-	queue_list = new QueueList();
-}
-
-$(document).ready(function($) {
-	setupQueueList();
 });
