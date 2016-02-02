@@ -9,7 +9,7 @@ from lib.Core.vars import Result
 from lib.Core.Utils.funcs import parseRequestEntity, generateMD5Hash
 
 from conf import PERMISSIONS, BASE_DIR, buildServerURL, DEBUG, SERVER_HOST, CONF_ROOT, getConfig, getSecrets, USER_ROOT
-from vars import FILE_NON_OVERWRITES, USER_CREDENTIAL_PACK, UnveillanceCookie, MIME_TYPE_TASK_REQUIREMENTS
+from vars import FILE_NON_OVERWRITES, USER_CREDENTIAL_PACK, UnveillanceCookie, TASK_REQUIREMENTS
 
 class UnveillanceAPI():
 	def __init__(self):
@@ -37,11 +37,11 @@ class UnveillanceAPI():
 		'''
 		if 'task_path' in req.keys():
 			req_keys = list(chain.from_iterable(
-				[k.keys() for k in MIME_TYPE_TASK_REQUIREMENTS]))
+				[k.keys() for k in TASK_REQUIREMENTS]))
 					
 			if req['task_path'] in req_keys:
 				try:
-					req_field = [k for k in MIME_TYPE_TASK_REQUIREMENTS if k.keys()[0] == req['task_path']][0][req['task_path']]
+					req_field = [k for k in TASK_REQUIREMENTS if k.keys()[0] == req['task_path']][0][req['task_path']]
 					print req_field
 				except Exception as e:
 					if DEBUG: print "Could not resolve required task info. %s" % e

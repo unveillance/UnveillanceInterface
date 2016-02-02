@@ -78,11 +78,15 @@ with open(os.path.join(CONF_ROOT, "api.settings.yaml"), 'rb') as C:
 
 API_PORT = getConfig('api.port')
 
+'''
+	# will not need; remove completely after testing
+
 try:
 	GIT_ANNEX = os.path.join(getConfig('git_annex_dir'), "git-annex")
 except Exception as e: 
 	print e, type(e)
 	pass
+'''
 
 try:
 	PYTHON_HOME = getConfig('python_home')
@@ -136,12 +140,6 @@ try:
 			SHA1_INDEX = config['index.sha1']
 		except KeyError as e:
 			pass
-
-		try:
-			TASK_POOL = getSecrets('task_pool')
-		except Exception as e:
-			print "NO TASK POOL YET!"
-			TASK_POOL = []
 	
 		del config
 except IOError as e: pass
