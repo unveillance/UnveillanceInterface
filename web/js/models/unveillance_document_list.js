@@ -1,7 +1,8 @@
 var UnveillanceDocumentList = UnveillanceList.extend({
 	constructor: function() {
 		var global_clicks = [
-			"onReindexRequested"
+			"onReindexRequested",
+			"onToggleAssetsRequested"
 		];
 
 		_.extend(arguments[0], { global_clicks : global_clicks });
@@ -43,7 +44,7 @@ var UnveillanceDocumentList = UnveillanceList.extend({
 						}, d).join(" ");
 
 						return {
-							asset_list_render : _.template(asset_list_render, { asset_list : asset_list }),
+							asset_list_render : _.template(asset_list_render, { num_assets : _.size(asset_list), asset_list : asset_list }),
 							actions_list_render : _.template(actions_list_render, { action_list : action_list })
 						};
 					}
@@ -66,5 +67,11 @@ var UnveillanceDocumentList = UnveillanceList.extend({
 		}
 
 		doc[1].reindex();
+	},
+	onToggleAssetsRequested: function() {
+		var el = arguments[0];
+		this.setActivatedItem(el);
+
+		$(el).html(toggleElement($(el).siblings("ul")[0]) ? "[ hide ]" : "[ expand ]");
 	}
 });

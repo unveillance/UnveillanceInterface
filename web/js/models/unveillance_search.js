@@ -8,8 +8,8 @@ var UnveillanceSearch = Backbone.Model.extend({
 				query : "",
 				callbacks : {
 					search : _.bind(this.onSearch, this),
-					facetMatches : this.onFacetMatches,
-					valueMatches : this.onValueMatches
+					facetMatches : _.bind(this.onFacetMatches, this),
+					valueMatches : _.bind(this.onValueMatches, this)
 				}
 			})
 		});
@@ -53,17 +53,14 @@ var UnveillanceSearch = Backbone.Model.extend({
 		}, this);
 
 		// reduce the simply-acquired matches by the more complex one
-		_.each(reduce_batch, function(batch) {
-			if(!batch[0].build) {
-				return;
-			}
+		_.each(reduce_batch, function(args) {
+			var facet = args[0];
+			var params = args[1];
+			var original_value = params.get('value');
 
-			var original_value = batch[1].get('value');
-
-			batch[1].set('value', batch[0].build(original_value));
-			matches = this.applyFilter(matches, batch[0], batch[1]);
-			
-			batch[1].set('value', original_value);
+			params.set('value', facet.batch(original_value));
+			matches = this.applyFilter(matches, facet, params);
+			params.set('value', original_value);
 
 		}, this);
 
@@ -81,12 +78,12 @@ var UnveillanceSearch = Backbone.Model.extend({
 		}
 	},
 	onFacetMatches: function(callback) {
-		callback(_.pluck(_.reject(UV.SEARCH_FACETS, function(f) {
+		callback(_.pluck(_.reject(this.get('search_facets'), function(f) {
 			return f.batch;
 		}), 'category'));
 	},
 	onValueMatches: function(facet, search_term, callback) {
-		var values = _.findWhere(UV.SEARCH_FACETS, { category : facet});
+		var values = _.findWhere(this.get('search_facets'), { category : facet});
 		if(values) {
 			callback(values.values);
 		}

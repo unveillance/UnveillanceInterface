@@ -71,6 +71,11 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			],
 			"unveil" : [
 				'/web/css/unveil.css',
+				'/web/css/visualsearch-datauri.css',
+				'/web/css/visualsearch.css',
+				'/web/css/search.css',
+				'/web/js/lib/visualsearch.js',
+				'/web/js/models/unveillance_search.js',
 				'/web/js/models/unveillance_document.js',
 				'/web/js/modules/unveil.js',
 			],
@@ -83,6 +88,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			],
 			"asset" : [
 				'/web/css/asset.css',
+				'/web/js/models/unveillance_document.js',
 				'/web/js/modules/asset.js'
 			]
 		}
