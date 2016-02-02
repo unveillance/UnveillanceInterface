@@ -13,12 +13,17 @@ a {
 
 a.uv_button {
 	background-color:#217d9b;
-	font-size:1.8em;
+	font-size:1.3em;
 	color: #fff;
 	display: inline-block;
 	margin:0.3em;
 	padding:0 0.3em;
 	text-decoration: none;
+}
+
+a.uv_button:hover {
+	text-decoration: none;
+	color: #fff;
 }
 
 .uv_activated {

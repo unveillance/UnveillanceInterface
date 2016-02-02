@@ -45,7 +45,17 @@ var UnveillanceQueue = Backbone.Model.extend({
 		}
 
 		return _.map(this.get('queue_list'), function(task_name) {
-			return _.template(this.get('task_li_tmpl'), { task_name : task_name });
+			var obj = { task_name : task_name }
+			var tmpl = 'task_li_tmpl';
+			
+			if(_.contains(_.keys(UV.TASK_REQUIREMENTS), task_name)) {
+				tmpl = 'task_li_with_opts_tmpl';
+				obj.task_options = _.map(UV.TASK_REQUIREMENTS[task_name], function(r) {
+					return _.template('<li><span><%= o %></span>: <input type="text" name="opt_<%= o %>" /></li>', { o : r});
+				}).join("");
+			}
+
+			return _.template(this.get(tmpl), obj);
 		}, this).join("");
 	},
 	queueTypeRender: function() {
