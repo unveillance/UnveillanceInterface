@@ -42,7 +42,7 @@ var UnveillanceSearch = Backbone.Model.extend({
 
 		// get the low-hanging fruit matches from what we have in DOM
 		_.each(params.models, function(param) {
-			var facet = _.findWhere(UV.SEARCH_FACETS, { category : param.get('category')});
+			var facet = _.findWhere(this.get('search_facets'), { category : param.get('category')});
 			
 			if(facet.batch) {
 				reduce_batch.push([facet, param]);

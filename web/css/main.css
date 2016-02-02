@@ -9,6 +9,10 @@
 	background-color: #ccc;
 }
 
+#uv_search_bar_holder table {
+	width:inherit;
+}
+
 #uv_notifications_tray {
 	height:12em;
 	border-bottom:5px solid #000;
@@ -34,16 +38,18 @@
 	width:100%;
 }
 
-#uv_document_holder ul li table tr {
-	border-bottom: 1px solid #000;
-}
-
 #uv_document_holder td {
 	vertical-align: top;
 }
 
 #uv_document_holder ul li {
 	min-height: 2em;
+	border-bottom: 1px solid #000;
+	padding-left:1em;
+}
+
+#uv_document_holder ul li ul li {
+	border:none;
 }
 
 #uv_document_holder ul li.active {

@@ -23,8 +23,7 @@ function loadDocument() {
 					return _.template("<li><%= t %></li>", { t : t });
 				}).join(""),
 				asset_list_render : _.map(doc.get('assets'), function(a) {
-					_.extend(a, { _id : doc.get('_id') });
-					return _.template(doc.get('asset_list_render_li'), a);
+					return _.template(doc.get('asset_list_render_li'), _.extend(a, { _id : doc.get('_id') }));
 				}).join("")
 			}
 		}	
@@ -35,7 +34,22 @@ function loadDocument() {
 
 	search_bar = new UnveillanceSearch({
 		root_el : $("#uv_document_search"),
-		data : [doc]
+		data : [doc],
+		search_facets : [
+			{
+				category : "text",
+				batch : function(text) {
+					console.info("searching doc for its sweet, sweet texty insides");
+					console.info(text)
+
+					return [];
+				},
+				assert : function(doc, value) {
+					console.info(value);
+					return false;
+				}
+			}
+		]
 	});
 
 	$(root_el).append(doc.refreshView());
