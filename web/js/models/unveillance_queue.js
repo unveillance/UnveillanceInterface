@@ -1,6 +1,9 @@
 var UnveillanceQueue = Backbone.Model.extend({
 	constructor: function() {
 		Backbone.Model.apply(this, arguments);
+
+		this.idAttribute = "cid";
+		this.set('cid', this.cid);
 	},
 	save: function() {
 		// save queue via POST to api

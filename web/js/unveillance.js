@@ -226,6 +226,10 @@ function doPost(endpoint, in_el, out_el) {
 	});
 }
 
+function setupMessenger(opts) {
+	window.unveillance_messenger = new UnveillanceMessenger(opts);
+}
+
 // code via http://dte-project.googlecode.com/svn/trunk/jquery-draggable/index.html
 // thank you!
 (function($) {

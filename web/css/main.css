@@ -36,3 +36,7 @@
 #uv_document_holder td {
 	vertical-align: top;
 }
+
+#uv_document_holder ul li.active {
+	background-color:#ccc;
+}
