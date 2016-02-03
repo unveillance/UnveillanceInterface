@@ -22,6 +22,7 @@ var UnveillanceQueueList = UnveillanceList.extend({
 		this.queue_stub = {
 			root_el : getTemplate("queue_holder_li.html"),
 			task_li_tmpl : getTemplate("task_li.html"),
+			task_li_with_opts_tmpl : getTemplate("task_li_with_opts.html"),
 			empty_task_li_tmpl : getTemplate("empty_task_li.html"),
 			empty_type_tmpl : getTemplate("empty_type_tmpl.html"),
 			interval_param_tmpl : getTemplate("interval_param_tmpl.html")

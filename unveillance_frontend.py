@@ -99,7 +99,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		}
 		
 		UnveillanceAPI.__init__(self)
-	
+
 	class WebAssetHandler(tornado.web.RequestHandler):	# TODO: secure this better.
 		@tornado.web.asynchronous
 		def get(self, uri):
@@ -210,7 +210,7 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 			footer = None
 
 			if hasattr(self.application, "WEB_TITLE"): 
-				web_title = self.application.WEB_TITLE
+				web_title = self.application.WEB_TITLE				
 			else:
 				web_title = WEB_TITLE
 			
