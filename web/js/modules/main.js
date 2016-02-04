@@ -1,4 +1,12 @@
-var document_list, messenger_tray;
+var document_list, messenger_tray, search_bar;
+
+function setupSearch() {
+	search_bar = new UnveillanceSearch({
+		root_el : $("#uv_search_bar_holder"),
+		data : document_list.data.models,
+		refresh_el : document_list.get('root_el')
+	});
+}
 
 function setupDocumentList() {
 	document_list = new UnveillanceDocumentList({
@@ -7,7 +15,6 @@ function setupDocumentList() {
 }
 
 function setupMessengerTray() {
-
 	var messenger_tray = $("#uv_notifications_tray").children("ul")[0];
 	var messenger_tray_li_tmpl = getTemplate("messenger_tray_li.html");
 	
@@ -46,4 +53,5 @@ function setupMessengerTray() {
 $(document).ready(function($) {
 	setupDocumentList();
 	setupMessengerTray();
+	setupSearch();
 });

@@ -17,6 +17,8 @@ var UnveillanceDocumentList = UnveillanceList.extend({
 			var asset_list_render_li = getTemplate("document_main_asset_list_render_li.html");
 			var actions_list_render_li = getTemplate("document_main_actions_list_render_li.html");
 
+			var uv_date_renderer = _.findWhere(UV.TRANSLATE_VALUES, { func : "uv_date" });
+
 			this.data = new Backbone.Collection(_.map(documents.data.documents, function(d) {
 				return new UnveillanceDocument(_.extend(d, {
 					root_el : document_main_holder_li,
@@ -24,6 +26,7 @@ var UnveillanceDocumentList = UnveillanceList.extend({
 					asset_list_render_li : asset_list_render_li,
 					actions_list_render : actions_list_render,
 					actions_list_render_li : actions_list_render_li,
+					uv_date_renderer : uv_date_renderer,
 					
 					getCustomRender : function() {
 						var asset_list = _.map(d.assets, function(a) {
