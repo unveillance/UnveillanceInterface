@@ -66,7 +66,7 @@ a.uv_button:hover {
 	height:inherit;
 }
 
-div table.uv_heading tr td {
+div table.uv_heading tr td, div.uv_heading {
 	padding: 1em;
 	background-color: #999;
 	color:#fff;

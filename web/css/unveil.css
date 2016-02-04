@@ -1,4 +1,4 @@
-#uv_document_opts, #uv_document_header, #uv_document_search_holder, #uv_document_tray {
+#uv_document_opts, #uv_document_header, #uv_document_search_holder, #uv_document_holder, #uv_document_tray {
 	width:100%;
 	display: table;
 	position: relative;
@@ -7,6 +7,10 @@
 #uv_document_search_holder {
 	height:2.2em;
 	background-color: #ccc;
+}
+
+#uv_document_search_holder table {
+	width: inherit;
 }
 
 #uv_document_search_holder #uv_document_search {
@@ -18,4 +22,8 @@
 	border-bottom:5px solid #000;
 	overflow-y: auto;
 	overflow-x: hidden; 
+}
+
+#uv_document_holder ul li {
+	padding-left:1em;
 }
