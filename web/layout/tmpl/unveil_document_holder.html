@@ -1,0 +1,8 @@
+<h3><%= file_alias_render %></h3>
+<ul>
+	<li>Date added : <%= date_added_render %></li>
+	<li>Mime type : <%= mime_type %></li>
+	<li>Assigned queue : <a target="_blank" href="/queue/?mt=<%= mime_type_map %>"><%= mime_type_map %></a></li>
+	<li>Queue history : <ul><%= queue_history_render %></ul></li>
+	<li>Assets : <ul><%= asset_list_render %></ul></li>
+</ul>

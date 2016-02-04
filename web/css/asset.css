@@ -1,7 +1,10 @@
-#uv_raw_asset_holder {
+#uv_raw_asset_holder, #uv_raw_asset_title, #uv_raw_asset_info {
 	width: 100%;
-	height: 100%;
 	padding: 1em;
+}
+
+#uv_raw_asset_holder {
+	height: 100%;
 }
 
 #uv_raw_asset_holder textarea {
@@ -13,5 +16,8 @@
 #uv_raw_asset_title {
 	font-weight: bold;
 	font-size: 0.8em;
-	padding: 1em;
+}
+
+#uv_raw_asset_info {
+	font-size: 0.8em;
 }

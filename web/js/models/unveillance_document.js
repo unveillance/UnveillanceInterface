@@ -3,18 +3,35 @@ var UnveillanceDocument = Backbone.Model.extend({
 		Backbone.Model.apply(this, arguments);
 		this.idAttribute = "_id";
 
-		var mime_type_map = null;
-		_.find(UV.MIME_TYPES, function(v, k) {
-			if(this.get('mime_type') === v) {
-				mime_type_map = k;
-				return true;
-			}
+		this.setup();
+	},
+	setup: function() {
+		if(this.has('mime_type')) {
+			var mime_type_map = null;
+			_.find(UV.MIME_TYPES, function(v, k) {
+				if(this.get('mime_type') === v) {
+					mime_type_map = k;
+					return true;
+				}
 
-			return false;
-		}, this);
+				return false;
+			}, this);
 
-		this.set('mime_type_map', mime_type_map);
-		this.set('date_added_render', this.get('uv_date_renderer').enc(this.get('date_added')));
+			this.set('mime_type_map', mime_type_map);
+		}
+
+		if(this.has('date_added') && this.has('uv_date_renderer')) {
+			this.set('date_added_render', this.get('uv_date_renderer').enc(this.get('date_added')));
+		}
+
+		this.set('file_alias_render', this.has('file_alias') ? this.get('file_alias') : this.get('file_name'));
+	},
+	pull: function() {
+		var record = doInnerAjax("documents", "post", { _id : this.get('_id') }, null, false);
+		if(record.result == 200 && record.data) {
+			this.set(record.data);
+			this.setup();
+		}
 	},
 	getAssetsByTagName: function(tag) {
 		var tagged_assets = [];

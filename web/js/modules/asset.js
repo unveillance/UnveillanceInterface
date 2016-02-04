@@ -13,13 +13,20 @@ function loadAsset() {
 		return;
 	}
 
+	var doc = new UnveillanceDocument({_id : asset._id});
+	doc.pull();
+
 	asset.path = _.template(".data/<%= _id %>/<%= file_name %>", asset);
+	_.extend(asset, _.findWhere(doc.get('assets'), { file_name : asset.file_name}));
 
 	$("#uv_raw_asset_title")
 		.html(asset.file_name)
 		.append(' <a onclick="onDownloadRequested(this);">Download</a>');
 
 	setRawAsset(root_el, asset.path);
+	_.each(["description"], function(k) {
+		$("#uv_raw_asset_info").append(_.template("<li><%= k %> : <%= v %>", { k : k, v : asset[k] }))	
+	}, this);
 }
 
 function onDownloadRequested(el) {

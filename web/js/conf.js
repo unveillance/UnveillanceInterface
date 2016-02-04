@@ -96,7 +96,7 @@ _.extend(UV, {
 	SEARCH_FACETS : [
 		{
 			category : "text",
-			build : function(text) {
+			batch : function(text) {
 				var text_matches = doInnerAjax("documents", "post", {
 					cast_as : "media_id",
 					searchable_text : "[" + text.toLowerCase().replace(/\s/g, ',').replace(/,,/g, ',') + "]"
@@ -108,7 +108,6 @@ _.extend(UV, {
 
 				return [];
 			},
-			batch : true,
 			assert : function(doc, ids) {
 				return _.contains(ids, doc.get('_id'));
 			}

@@ -2,9 +2,10 @@ var document_list, messenger_tray, search_bar;
 
 function setupSearch() {
 	search_bar = new UnveillanceSearch({
-		root_el : $("#uv_search_bar_holder"),
+		root_el : $("#uv_document_search"),
 		data : document_list.data.models,
-		refresh_el : document_list.get('root_el')
+		refresh_el : document_list.get('root_el'),
+		search_facets : UV.SEARCH_FACETS
 	});
 }
 
