@@ -30,5 +30,8 @@ var UnveillanceList = Backbone.Model.extend({
 				return m.get(m.idAttribute) == id;
 			})[0]];
 		}
+	},
+	sortView: function() {
+		console.info(arguments);
 	}
 });

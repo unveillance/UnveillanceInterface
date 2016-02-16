@@ -8,12 +8,15 @@ function extendCustomConfig() {
 		async: false
 	}).success().responseText);
 
-	_.extend(UV.MIME_TYPE_TASKS, custom_uv.MIME_TYPE_TASKS || {});
-	_.extend(UV.MIME_TYPES, custom_uv.MIME_TYPE_MAP || {});
-	_.extend(UV.INITIAL_TASKS, custom_uv.INITIAL_TASKS || {});
-	_.extend(UV.INTERVAL_TASKS, custom_uv.INTERVAL_TASKS || {});
+	_.each(["MIME_TYPE_TASKS", "INITIAL_TASKS", "INTERVAL_TASKS"], function(k) {
+		_.extend(UV[k], custom_uv[k] || {})
+	});
 
-	UV.TASK_POOL = _.union(UV.TASK_POOL, custom_uv.TASK_POOL || []);
+	_.each(["TASK_POOL"], function(k) {
+		UV[k] = _.union(UV[k], custom_uv[k] || []);
+	});
+
+	_.extend(UV.MIME_TYPES, custom_uv.MIME_TYPE_MAP || {});
 }
 
 UV = JSON.parse($.ajax({

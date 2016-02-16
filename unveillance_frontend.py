@@ -45,6 +45,8 @@ class UnveillanceFrontend(tornado.web.Application, UnveillanceAPI, UnveillanceFS
 		self.default_on_loads = [
 			"/web/css/bootstrap.min.css",
 			"/web/js/lib/sockjs.min.js",
+			"/web/js/unveillance.js",
+			"/web/js/conf.js",
 			"/web/js/models/unveillance_messenger.js",
 			"/web/js/lib/bootstrap.min.js"
 		]
