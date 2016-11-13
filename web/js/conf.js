@@ -1,25 +1,4 @@
-var UV;
-
-function extendCustomConfig() {
-	var custom_uv = JSON.parse($.ajax({
-		url: "/web/vars.json",
-		dataType: "json",
-		method: "get",
-		async: false
-	}).success().responseText);
-
-	_.each(["MIME_TYPE_TASKS", "INITIAL_TASKS", "INTERVAL_TASKS"], function(k) {
-		_.extend(UV[k], custom_uv[k] || {})
-	});
-
-	_.each(["TASK_POOL"], function(k) {
-		UV[k] = _.union(UV[k], custom_uv[k] || []);
-	});
-
-	_.extend(UV.MIME_TYPES, custom_uv.MIME_TYPE_MAP || {});
-}
-
-UV = JSON.parse($.ajax({
+var UV = JSON.parse($.ajax({
 	url: "/web/conf.json",
 	dataType: "json",
 	method: "get",
@@ -166,12 +145,6 @@ _.extend(UV, {
 		}
 	]
 });
-
-try {
-	extendCustomConfig()
-} catch(err) {
-	console.warn(err);
-}
 
 
 

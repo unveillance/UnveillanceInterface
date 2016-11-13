@@ -8,8 +8,8 @@ var UnveillanceDocumentList = UnveillanceList.extend({
 		_.extend(arguments[0], { global_clicks : global_clicks });
 		UnveillanceList.apply(this, arguments);
 
-		var default_mime_types = _.values(_.pick(UV.MIME_TYPES, _.values(_.without(_.keys(UV.MIME_TYPES), "txt_stub"))));		
-		var documents = doInnerAjax("documents", "post", { mime_type : "[" + default_mime_types.join(",") + "]" }, null, false);
+		//var default_mime_types = _.values(_.pick(UV.MIME_TYPES, _.values(_.without(_.keys(UV.MIME_TYPES), "txt_stub"))));		
+		var documents = doInnerAjax("documents", "post", { mime_type : "[" + UV.DEFAULT_HOME_MIME_TYPES.join(",") + "]" }, null, false);
 		if(documents.result == 200 && documents.data && documents.data.documents) {
 			
 			var document_main_holder_li = getTemplate("document_main_holder_li.html");
